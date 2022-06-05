@@ -1,12 +1,19 @@
 <template>
   <div class="px-6">
     <div class="prose mb-2">
-      <h2>On Going Plan</h2>
+      <h3>Ongoing Plan</h3>
     </div>
     <div class="flex flex-wrap">
       <div v-for="category in categories" :key="category.name" class="mx-2">
-          <img :src="category.imagesUrl" :alt="category.name" class="w-16">
-          <p class="text-center text-sm">{{category.name}}</p>
+        <div class="card lg:card-side bg-base-100 shadow-xl">
+          <figure><img :src="category.imagesUrl" :alt="category.name" ></figure>
+          <div class="card-body">
+            <h2 class="card-title">{{category.name}}</h2>
+            <div class="card-actions justify-end">
+              <button class="btn btn-accent w-full">Detail</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -18,8 +25,8 @@ export default {
     return {
       categories: [
         {
-          name: 'All',
-          imagesUrl: 'https://i.postimg.cc/pXY01TxV/Screen-Shot-2022-06-05-at-00-54-53.png',
+          name: 'Jalan jalan santai',
+          imagesUrl: 'https://api.lorem.space/image/album?w=400&h=100',
         },
       ],
     };

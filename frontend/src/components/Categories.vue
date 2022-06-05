@@ -1,12 +1,16 @@
 <template>
   <div class="px-6">
     <div class="prose mb-2">
-      <h2>Explore Categories</h2>
+      <h3>What kind of tour suits you today?</h3>
     </div>
     <div class="flex flex-wrap">
-      <div v-for="category in categories" :key="category.name" class="mx-2">
-        <img :src="category.imagesUrl" :alt="category.name" class="w-16">
-        <p class="text-center text-sm">{{category.name}}</p>
+      <div
+        v-for="category in categories"
+        :key="category.name"
+        class="mt-2 btn btn-ghost flex flex-col h-full p-2 w-1/3 md:w-24"
+      >
+        <img :src="category.imagesUrl" :alt="category.name" class="w-full mask mask-squircle">
+        <p class="text-center text-sm pt-2 normal-case">{{category.name}}</p>
       </div>
     </div>
   </div>
@@ -18,24 +22,28 @@ export default {
     return {
       categories: [
         {
-          name: 'All',
-          imagesUrl: 'https://i.postimg.cc/pXY01TxV/Screen-Shot-2022-06-05-at-00-54-53.png',
+          name: 'All Categories',
+          imagesUrl: 'https://i.postimg.cc/xd5G44hF/all-categories-1-1.png',
+        },
+        {
+          name: 'Culinary',
+          imagesUrl: 'https://i.postimg.cc/hGNTJQzc/culinary-1.png',
+        },
+        {
+          name: 'Leisure',
+          imagesUrl: 'https://i.postimg.cc/qv5CY6Gy/Leisure-1.png',
+        },
+        {
+          name: 'Wellness',
+          imagesUrl: 'https://i.postimg.cc/NFByT6gq/wellness-1.png',
         },
         {
           name: 'Nature',
-          imagesUrl: 'https://i.postimg.cc/pXY01TxV/Screen-Shot-2022-06-05-at-00-54-53.png',
-        },
-        {
-          name: 'Jalan aja',
-          imagesUrl: 'https://i.postimg.cc/pXY01TxV/Screen-Shot-2022-06-05-at-00-54-53.png',
-        },
-        {
-          name: 'Gatau Apa',
-          imagesUrl: 'https://i.postimg.cc/pXY01TxV/Screen-Shot-2022-06-05-at-00-54-53.png',
+          imagesUrl: 'https://i.postimg.cc/W1ChSL27/nature-1.png',
         },
         {
           name: 'Shopping',
-          imagesUrl: 'https://i.postimg.cc/pXY01TxV/Screen-Shot-2022-06-05-at-00-54-53.png',
+          imagesUrl: 'https://i.postimg.cc/0Qdj8z7t/shopping-1.png',
         },
       ],
     };
