@@ -9,6 +9,8 @@
         v-for="destination in destinations"
         :key="destination.name"
         :destination="destination"
+        @addPackage="des => $emit('addPackage', des)"
+        @removePackage="desId => $emit('removePackage', desId)"
       />
     </div>
   </div>
@@ -21,43 +23,8 @@ export default {
   components: {
     Card,
   },
-  data() {
-    return {
-      destinations: [
-        {
-          name: 'Aare',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bern, Swiss',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          name: 'Culinary',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          name: 'Leisure',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          name: 'Wellness',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-      ],
-    };
+  props: {
+    destinations: Array,
   },
 };
 </script>

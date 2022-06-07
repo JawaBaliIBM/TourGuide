@@ -1,37 +1,27 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation location="Cimahi" class="pt-12"/>
-    <SearchResult
-      :destinations="destinations"
-      class="pt-6"
-      @addPackage="addBasket"
-      @removePackage="removeFromBasket"
-    />
-    <AddPackageButton
-      v-if="basket.length > 0"
-      :count="basket.length"
+    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <CurrentLocation
+      :disable-edit="true"
+      location="Cimahi"
+      class="pt-12"
     />
   </div>
 </template>
 <script>
 import SearchNavbar from '@/components/SearchNavbar.vue';
 import CurrentLocation from '@/components/CurrentLocation.vue';
-import SearchResult from '@/components/SearchResult.vue';
-import AddPackageButton from '../components/AddPackageButton.vue';
 
 export default {
   name: 'SearchResultView',
   components: {
     SearchNavbar,
     CurrentLocation,
-    SearchResult,
-    AddPackageButton,
   },
   data() {
     return {
       basket: [],
-      destinations: [
+      myPackages: [
         {
           id: 1,
           name: 'Aare',
@@ -70,14 +60,6 @@ export default {
         },
       ],
     };
-  },
-  methods: {
-    addBasket(destination) {
-      this.basket.push(destination);
-    },
-    removeFromBasket(destinationId) {
-      this.basket = this.basket.filter((des) => des.id !== destinationId);
-    },
   },
 };
 </script>
