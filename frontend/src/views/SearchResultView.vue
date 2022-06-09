@@ -11,6 +11,7 @@
     <AddPackageButton
       v-if="basket.length > 0"
       :count="basket.length"
+      @click="redirectToPackagePage"
     />
   </div>
 </template>
@@ -77,6 +78,11 @@ export default {
     },
     removeFromBasket(destinationId) {
       this.basket = this.basket.filter((des) => des.id !== destinationId);
+    },
+    redirectToPackagePage() {
+      this.$router.push({
+        name: 'myPackages',
+      });
     },
   },
 };

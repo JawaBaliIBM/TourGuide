@@ -1,10 +1,14 @@
 <template>
   <div class="px-6 prose">
     <p class="mb-2">Your Current Location <span class="font-bold">{{location}}</span></p>
-    <a v-if="!disableEdit" href="" class="flex items-center text-secondary no-underline text-sm">
+    <button
+      v-if="!disableEdit"
+      class="flex items-center text-secondary no-underline text-sm"
+      @click="redirectToHomeView"
+    >
       <LocationMarkerIcon class="h-5 w-5 mr-2"/>
       Explore Other Places
-    </a>
+    </button>
   </div>
 </template>
 
@@ -20,6 +24,13 @@ export default {
     location: String,
     disableEdit: {
       type: Boolean,
+    },
+  },
+  methods: {
+    redirectToHomeView() {
+      this.$router.push({
+        name: 'home',
+      });
     },
   },
 };

@@ -4,14 +4,15 @@
       <h3>What kind of tour suits you today?</h3>
     </div>
     <div class="flex flex-wrap">
-      <div
+      <button
         v-for="category in categories"
         :key="category.name"
         class="mt-2 btn btn-ghost flex flex-col h-full p-2 w-1/3 md:w-24"
+        @click="redirectToSearchPage(category.name)"
       >
         <img :src="category.imagesUrl" :alt="category.name" class="w-full mask mask-squircle">
         <p class="text-center text-sm pt-2 normal-case">{{category.name}}</p>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -47,6 +48,16 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    redirectToSearchPage(categoryName) {
+      this.$router.push({
+        name: 'result',
+        query: {
+          category: categoryName,
+        },
+      });
+    },
   },
 };
 </script>
