@@ -31,6 +31,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/MyPackages.vue'),
   },
+  {
+    path: '/timeline',
+    name: 'timeline',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/TimelineList.vue'),
+  },
 ];
 
 const router = createRouter({
