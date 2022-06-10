@@ -8,7 +8,7 @@
         data-content=""
       >
         <div class="flex border border-base-200 rounded-md m-4 mr-6 w-full indicator">
-          <div class="indicator-item">
+          <div v-if="!fixed" class="indicator-item">
             <div class="badge badge-lg badge-ghost cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </div>
@@ -16,12 +16,17 @@
             <span
               class="indicator-item indicator-bottom indicator-center flex"
             >
-              <span class="badge badge-primary text-white cursor-pointer">
-                <ArrowUpIcon class="w-4" />
-              </span>
-              <span class="badge badge-primary text-white cursor-pointer">
-                <ArrowDownIcon class="w-4"/>
-              </span>
+              <button v-if="fixed" class="btn btn-primary btn-xs text-white cursor-pointer ">
+                Book Now
+              </button>
+              <div v-else class="flex">
+                <span class="badge badge-primary text-white cursor-pointer">
+                  <ArrowUpIcon class="w-4" />
+                </span>
+                <span class="badge badge-primary text-white cursor-pointer">
+                  <ArrowDownIcon class="w-4"/>
+                </span>
+              </div>
             </span>
           <img :src="pack.imagesUrl" :alt="pack.name" class="w-24" />
           <div class="ml-4">
@@ -53,6 +58,7 @@ export default {
   name: 'Timeline',
   props: {
     packages: Array,
+    fixed: Boolean,
   },
   components: {
     XIcon,
