@@ -6,27 +6,26 @@
       location="Cimahi"
       class="pt-12"
     />
-    <h1 class="pros flex justify-center font-bold text-lg">Here is our recommendation</h1>
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
-      <h2 class="text-lg">Package name</h2>
+      <h2 class="prosa text-lg">Package name</h2>
     </div>
-    <Timeline :packages="myPackages" class="mb-24"/>
-    <FloatingButton text="Confirm Package" :fixed="true" class="z-40" @click="redirectToCheckout"/>
+    <Pricelist :destinations="myPackages" :total="40000" class="mb-4"/>
+    <FloatingButton text="Pay" :fixed="true" @click="redirectToTimeline"/>
   </div>
 </template>
 <script>
 import SearchNavbar from '@/components/SearchNavbar.vue';
 import CurrentLocation from '@/components/CurrentLocation.vue';
-import Timeline from '@/components/Timeline.vue';
+import Pricelist from '@/components/Pricelist.vue';
 import FloatingButton from '@/components/FloatingButton.vue';
 import { PencilIcon } from '@heroicons/vue/solid';
 
 export default {
-  name: 'TimelineList',
+  name: 'SearchResultView',
   components: {
     SearchNavbar,
     CurrentLocation,
-    Timeline,
+    Pricelist,
     FloatingButton,
     PencilIcon,
   },
@@ -74,10 +73,8 @@ export default {
     };
   },
   methods: {
-    redirectToCheckout() {
-      this.$router.push({
-        name: 'checkout',
-      });
+    redirectToTimeline() {
+      this.$router.push({ name: 'timeline' });
     },
   },
 };
