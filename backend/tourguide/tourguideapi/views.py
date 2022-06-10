@@ -39,6 +39,5 @@ class POIList(generics.ListAPIView):
         if not keyword is None:
             queryset = queryset.filter(title__icontains=keyword)
 
-        print(queryset.raw)
-
         return queryset
+        

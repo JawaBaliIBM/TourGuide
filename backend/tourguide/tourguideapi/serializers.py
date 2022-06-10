@@ -13,3 +13,4 @@ class POISerializer(serializers.ModelSerializer):
         model = PointOfInterest
         fields = ['id', 'title', 'photo', 'category', 'description', 
             'address', 'price', 'open_time', 'avg_time_spent']
+            
