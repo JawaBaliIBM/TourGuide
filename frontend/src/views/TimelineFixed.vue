@@ -1,38 +1,34 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation location="Cimahi" class="pt-12"/>
-    <SearchResult
-      :destinations="destinations"
-      class="pt-6"
-      @addPackage="addBasket"
-      @removePackage="removeFromBasket"
+    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <CurrentLocation
+      :disable-edit="true"
+      location="Cimahi"
+      class="pt-12"
     />
-    <AddPackageButton
-      v-if="basket.length > 0"
-      :count="basket.length"
-      @click="redirectToPackagePage"
-    />
+    <h1 class="pros flex justify-center font-bold text-lg">Enjoy your day</h1>
+    <div class="flex justify-center items-center py-4 font-medium text-secondary">
+      <h2 class="text-lg">Package name</h2>
+    </div>
+    <Timeline :packages="myPackages" class="mb-24" fixed />
   </div>
 </template>
 <script>
 import SearchNavbar from '@/components/SearchNavbar.vue';
 import CurrentLocation from '@/components/CurrentLocation.vue';
-import SearchResult from '@/components/SearchResult.vue';
-import AddPackageButton from '../components/AddPackageButton.vue';
+import Timeline from '@/components/Timeline.vue';
 
 export default {
-  name: 'SearchResultView',
+  name: 'TimelineFixed',
   components: {
     SearchNavbar,
     CurrentLocation,
-    SearchResult,
-    AddPackageButton,
+    Timeline,
   },
   data() {
     return {
       basket: [],
-      destinations: [
+      myPackages: [
         {
           id: 1,
           name: 'Aare',
@@ -73,15 +69,9 @@ export default {
     };
   },
   methods: {
-    addBasket(destination) {
-      this.basket.push(destination);
-    },
-    removeFromBasket(destinationId) {
-      this.basket = this.basket.filter((des) => des.id !== destinationId);
-    },
-    redirectToPackagePage() {
+    redirectToCheckout() {
       this.$router.push({
-        name: 'myPackages',
+        name: 'checkout',
       });
     },
   },

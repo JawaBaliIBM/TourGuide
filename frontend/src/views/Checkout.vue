@@ -1,38 +1,38 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation location="Cimahi" class="pt-12"/>
-    <SearchResult
-      :destinations="destinations"
-      class="pt-6"
-      @addPackage="addBasket"
-      @removePackage="removeFromBasket"
+    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <CurrentLocation
+      :disable-edit="true"
+      location="Cimahi"
+      class="pt-12"
     />
-    <AddPackageButton
-      v-if="basket.length > 0"
-      :count="basket.length"
-      @click="redirectToPackagePage"
-    />
+    <div class="flex justify-center items-center py-4 font-medium text-secondary">
+      <h2 class="prosa text-lg">Package name</h2>
+    </div>
+    <Pricelist :destinations="myPackages" :total="40000" class="mb-4"/>
+    <FloatingButton text="Pay" :fixed="true" @click="redirectToTimeline"/>
   </div>
 </template>
 <script>
 import SearchNavbar from '@/components/SearchNavbar.vue';
 import CurrentLocation from '@/components/CurrentLocation.vue';
-import SearchResult from '@/components/SearchResult.vue';
-import AddPackageButton from '../components/AddPackageButton.vue';
+import Pricelist from '@/components/Pricelist.vue';
+import FloatingButton from '@/components/FloatingButton.vue';
+import { PencilIcon } from '@heroicons/vue/solid';
 
 export default {
   name: 'SearchResultView',
   components: {
     SearchNavbar,
     CurrentLocation,
-    SearchResult,
-    AddPackageButton,
+    Pricelist,
+    FloatingButton,
+    PencilIcon,
   },
   data() {
     return {
       basket: [],
-      destinations: [
+      myPackages: [
         {
           id: 1,
           name: 'Aare',
@@ -73,16 +73,8 @@ export default {
     };
   },
   methods: {
-    addBasket(destination) {
-      this.basket.push(destination);
-    },
-    removeFromBasket(destinationId) {
-      this.basket = this.basket.filter((des) => des.id !== destinationId);
-    },
-    redirectToPackagePage() {
-      this.$router.push({
-        name: 'myPackages',
-      });
+    redirectToTimeline() {
+      this.$router.push({ name: 'timeline-fixed' });
     },
   },
 };

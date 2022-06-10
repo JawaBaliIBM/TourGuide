@@ -16,8 +16,19 @@
       <p class="text-xs text-gray-400 pt-2">{{destination.description}}</p>
       <p class="text-md flex justify-end font-medium text-accent">Rp{{destination.price}}</p>
       <div class="card-actions justify-end">
-        <button class="btn btn-primary btn-sm mt-2 w-full text-base-100 normal-case">
+        <button
+          v-if="isShowAddButton"
+          class="btn btn-primary btn-sm mt-2 w-full text-base-100 normal-case"
+          @click="handleAddPackage"
+        >
           Add To Package
+        </button>
+        <button
+          v-else
+          class="btn btn-accent btn-sm mt-2 w-full text-base-100 normal-case"
+          @click="handleRemovePackage"
+        >
+          Remove package
         </button>
       </div>
       <div>
@@ -36,6 +47,21 @@ export default {
   components: {
     LocationMarkerIcon,
     ClockIcon,
+  },
+  data() {
+    return {
+      isShowAddButton: true,
+    };
+  },
+  methods: {
+    handleAddPackage() {
+      this.isShowAddButton = false;
+      this.$emit('addPackage', this.destination);
+    },
+    handleRemovePackage() {
+      this.isShowAddButton = true;
+      this.$emit('removePackage', this.destination.id);
+    },
   },
 };
 </script>

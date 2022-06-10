@@ -3,30 +3,61 @@
     <div class="prose mb-2">
       <h3>Ongoing Plan</h3>
     </div>
-    <div class="flex flex-wrap">
-      <div v-for="category in categories" :key="category.name" class="mx-2">
-        <div class="card lg:card-side bg-base-100 shadow-xl">
-          <figure><img :src="category.imagesUrl" :alt="category.name" ></figure>
-          <div class="card-body">
-            <h2 class="card-title">{{category.name}}</h2>
-            <div class="card-actions justify-end">
-              <button class="btn btn-accent w-full">Detail</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <FixedPackageList :packages="myPackages" class="max-h-48 overflow-auto" fixed />
   </div>
 </template>
 <script>
+import FixedPackageList from '@/components/FixedPackageList.vue';
+
 export default {
   name: 'MyPlan',
+  components: {
+    FixedPackageList,
+  },
   data() {
     return {
       categories: [
         {
           name: 'Jalan jalan santai',
           imagesUrl: 'https://api.lorem.space/image/album?w=400&h=100',
+        },
+      ],
+      myPackages: [
+        {
+          id: 1,
+          name: 'Aare',
+          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
+          location: 'Bern, Swiss',
+          time: '09.00 - 10.00',
+          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
+          price: 10000,
+        },
+        {
+          id: 2,
+          name: 'Culinary',
+          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
+          location: 'Bandung, Jawa Barat',
+          time: '09.00 - 10.00',
+          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
+          price: 10000,
+        },
+        {
+          id: 3,
+          name: 'Leisure',
+          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
+          location: 'Bandung, Jawa Barat',
+          time: '09.00 - 10.00',
+          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
+          price: 10000,
+        },
+        {
+          id: 4,
+          name: 'Wellness',
+          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
+          location: 'Bandung, Jawa Barat',
+          time: '09.00 - 10.00',
+          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
+          price: 10000,
         },
       ],
     };
