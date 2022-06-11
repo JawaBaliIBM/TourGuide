@@ -11,21 +11,21 @@ from django.utils.translation import gettext_lazy as _
 #     access_token = models.CharField()
 
 
-class Category(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    description = models.TextField()
+# class Category(models.Model):
+#     id = models.BigAutoField(primary_key=True)
+#     name = models.CharField(max_length=128)
+#     description = models.TextField()
 
 class PointOfInterest(models.Model):
-    # class Category(models.TextChoices):
-    #     NATURE = "NA", _("Nature")
-    #     SHOPPING = "SH", _("Shopping")
-    #     LEISURE = "LE", _("Leisure")
-    #     CULINARY = "CU", _("Culinary")
+    class Category(models.TextChoices):
+        NATURE = "NA", _("Nature")
+        WELLNESS = "WE", _("Wellness")
+        LANDMARK = "LA", _("Landmark")
+        CULINARY = "CU", _("Culinary")
+        MUSEUMS = "MG", _("Museums & Galleries")
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=128)
-    # category = models.CharField(max_length=2, choices=Category.choices)
-    category = models.ManyToManyField(Category)
+    category = models.CharField(max_length=2, choices=Category.choices)
     photo = models.CharField(max_length=256)
     description = models.TextField()
     address = models.TextField()
@@ -34,11 +34,17 @@ class PointOfInterest(models.Model):
     avg_time_spent = models.PositiveIntegerField(default=60)
     lat = models.FloatField()
     long = models.FloatField()
-
+    city = models.ForeignKey(
+        "City",
+        on_delete=models.CASCADE,
+        related_name="pois",
+        related_query_name="poi"
+    )
 
 class Plan(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=128)
+    created_at = models.DateTimeField(auto_now_add=True)
     # owner = models.ForeignKey(
     #     "User",
     #     on_delete=models.CASCADE,
@@ -61,3 +67,7 @@ class PlanItem(models.Model):
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0)
     type = models.CharField(max_length=3, choices=PlanItemChoice.choices)
+
+class City(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=128)
