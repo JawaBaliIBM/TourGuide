@@ -11,12 +11,18 @@ from tourguideapi.models import (
     City, PointOfInterest
 )
 from tourguideapi.serializers import (
-    CitySerializer, POISerializer
+    CitySerializer, POISerializer, PlanSerializer
 )
+
+import logging
+
+from datetime import datetime
+
+logger = logging.getLogger(__name__)
+
 
 
 from tourguideapi.models import PointOfInterest
-from tourguideapi.serializers import POISerializer
 from tourguideapi.serializers import PlanReviewSerializer
 from tourguideapi.models import Plan
 from tourguideapi.models import PlanItem
@@ -82,6 +88,7 @@ def get_plan_review(request: Request):
     plan_ser = PlanReviewSerializer(plan, context={'items': plan_items})
     return Response(plan_ser.data)
 
+
 class CityViewSet(viewsets.ViewSet):
     """
         A simple ViewSet for listing or retrieving cities.
@@ -90,6 +97,7 @@ class CityViewSet(viewsets.ViewSet):
         queryset = City.objects.all()
         serializer = CitySerializer(queryset, many=True)
         return Response(serializer.data)
+
 
 class POIList(generics.ListAPIView):
     serializer_class = POISerializer
@@ -100,7 +108,6 @@ class POIList(generics.ListAPIView):
         by filtering against the three query parameter in the URL.
         """
         city_id = self.request.query_params.get('city_id')
-        print('city id', city_id)
         if not city_id is None:
             queryset = City.objects.get(id=int(city_id)).pois.all()
         else:
@@ -116,3 +123,48 @@ class POIList(generics.ListAPIView):
 
         return queryset
         
+
+class OnGoingPlanViewset(viewsets.ViewSet):
+    def list(self, request):
+        year, month, day = self.__today_date()
+        try:
+            plan = Plan.objects.filter(created_at__year=year,
+                created_at__month=month, created_at__day=day)
+            serializer = PlanSerializer(
+                plan, 
+                many=True)
+        except Plan.DoesNotExist:
+            logger.warning("On going plan does not exist!")
+            serializer = PlanSerializer(None, many=True)
+        
+        return Response(serializer.data)
+
+    def create(self, request):
+        data = request.data
+        items_data = data.pop('plan_items')
+        try:
+            plan = Plan.objects.create(**data)
+            for item_data in items_data:
+                PlanItem.objects.create(plan=plan, **item_data)
+        except Exception as e:
+            logger.error(e)
+            logger.error('Plan insertion failed.')
+
+            return Response({
+                'code': 401,
+                'isSuccess': False,
+                'error': {
+                    'message': 'Plan Creation Failed'
+                }
+            })
+
+        return Response({
+            'code': 200,
+            'isSuccess': True,
+            'error': None
+        })
+
+    def __today_date(self):
+        today = datetime.today()
+
+        return today.year, today.month, today.day

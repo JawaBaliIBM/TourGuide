@@ -4,7 +4,7 @@ from tourguideapi.models import PointOfInterest
 from tourguideapi.models import PlanItem
 from tourguideapi.models import Plan
 from .models import (
-    City, PointOfInterest
+    City, PointOfInterest, Plan, PlanItem
 )
 
 class CitySerializer(serializers.ModelSerializer):
@@ -28,22 +28,19 @@ class PlanItemSerializer(serializers.ModelSerializer):
 
 
 class PlanSerializer(serializers.ModelSerializer):
-    items = serializers.SerializerMethodField('get_items')
-
-    def get_items(self, obj):
-        # Make sure the items returned are sorted by order of trip,
-        # in this case, by order or object insertion/creation
-        # TODO: Order by seq
-        # return PlanItemSerializer(sorted(self.context.get("items", []), key=seq), many=True, read_only=True).data
-        return PlanItemSerializer(self.context.get("items", []), many=True, read_only=True).data
+    plan_items = serializers.SerializerMethodField()
 
     class Meta:
         model = Plan
-        # fields = '__all__'
-        exclude = ['id']
+        fields = ['name', 'plan_items']
+
+    def get_plan_items(self, obj):
+        plan_items = PlanItem.objects.filter(plan=obj)
+        return PlanItemSerializer(plan_items, many=True).data
 
 
-class PlanReviewSerializer(PlanSerializer):
+class PlanReviewSerializer(serializers.ModelSerializer):
+    plan_items = serializers.SerializerMethodField('get_items')
     total = serializers.SerializerMethodField('get_total')
 
     def get_total(self, obj):
@@ -52,4 +49,12 @@ class PlanReviewSerializer(PlanSerializer):
         for plan_item in plan_items:
             total += plan_item.price
         return total
-   
+
+    def get_items(self, obj):
+        # Make sure the items returned are sorted by order of trip
+        return PlanItemSerializer(sorted(self.context.get("items", []), key=lambda x:x.seq), many=True, read_only=True).data
+
+    class Meta:
+        model = Plan
+        # fields = '__all__'
+        exclude = ['id']
