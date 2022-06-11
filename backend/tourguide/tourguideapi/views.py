@@ -2,13 +2,24 @@ import random
 from django.views.decorators.csrf import csrf_exempt
 
 
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 
+from tourguideapi.models import (
+    City, PointOfInterest
+)
+from tourguideapi.serializers import (
+    CitySerializer, POISerializer
+)
+
+
 from tourguideapi.models import PointOfInterest
-from tourguideapi.serializers import POISerializer, PlanReviewSerializer
-from tourguideapi.models import Plan, PlanItem
+from tourguideapi.serializers import POISerializer
+from tourguideapi.serializers import PlanReviewSerializer
+from tourguideapi.models import Plan
+from tourguideapi.models import PlanItem
 
 
 # Create your views here.
@@ -70,3 +81,38 @@ def get_plan_review(request: Request):
 
     plan_ser = PlanReviewSerializer(plan, context={'items': plan_items})
     return Response(plan_ser.data)
+
+class CityViewSet(viewsets.ViewSet):
+    """
+        A simple ViewSet for listing or retrieving cities.
+    """
+    def list(self, request):
+        queryset = City.objects.all()
+        serializer = CitySerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class POIList(generics.ListAPIView):
+    serializer_class = POISerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned pois base on category, city, and keyword,
+        by filtering against the three query parameter in the URL.
+        """
+        city_id = self.request.query_params.get('city_id')
+        print('city id', city_id)
+        if not city_id is None:
+            queryset = City.objects.get(id=int(city_id)).pois.all()
+        else:
+            queryset = PointOfInterest.objects.all()
+
+        category = self.request.query_params.get('category')
+        if not category is None:
+            queryset = queryset.filter(category=category)
+
+        keyword = self.request.query_params.get('keyword')
+        if not keyword is None:
+            queryset = queryset.filter(title__icontains=keyword)
+
+        return queryset
+        

@@ -3,22 +3,28 @@ from rest_framework import serializers
 from tourguideapi.models import PointOfInterest
 from tourguideapi.models import PlanItem
 from tourguideapi.models import Plan
+from .models import (
+    City, PointOfInterest
+)
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ['id', 'name']
 
 class POISerializer(serializers.ModelSerializer):
     class Meta:
         model = PointOfInterest
         depth = 1
-        fields = [
-            'id', 'title', 'category', 'photo', 'description', 'address',
-            'price', 'avg_time_spent'
-            ]
+        fields = ['id', 'title', 'photo', 'category', 'description', 
+            'address', 'price', 'open_time', 'avg_time_spent']
 
 
 class PlanItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanItem
         # fields = '__all__'
-        exclude = ['plan']
+        exclude = ['id', 'plan']
 
 
 class PlanSerializer(serializers.ModelSerializer):
@@ -33,7 +39,8 @@ class PlanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Plan
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['id']
 
 
 class PlanReviewSerializer(PlanSerializer):
@@ -45,3 +52,4 @@ class PlanReviewSerializer(PlanSerializer):
         for plan_item in plan_items:
             total += plan_item.price
         return total
+   
