@@ -10,8 +10,19 @@
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
       <h2 class="text-lg">Package name</h2>
     </div>
-    <Timeline :packages="myPackages" class="mb-24"/>
-    <FloatingButton text="Confirm Package" :fixed="true" class="z-40" @click="redirectToCheckout"/>
+    <Timeline
+      :packages="myPackages"
+      class="mb-24"
+      @close="id => handleClose(id)"
+      @arrowUp="index => handleArrowUp(index)"
+      @arrowDown="index => handleArrowDown(index)"
+    />
+    <FloatingButton
+      text="Confirm Package"
+      :fixed="true"
+      class="z-40"
+      @click="redirectToCheckout"
+    />
   </div>
 </template>
 <script>
@@ -83,7 +94,24 @@ export default {
     redirectToCheckout() {
       this.$router.push({
         name: 'checkout',
+        query: {
+          ...this.$route.query,
+        },
       });
+    },
+    handleClose(id) {
+      this.myPackages = this.myPackages.filter((dest) => dest.id !== id);
+    },
+    handleArrowUp(index) {
+      this.swapPackages(index, index - 1);
+    },
+    handleArrowDown(index) {
+      this.swapPackages(index, index + 1);
+    },
+    swapPackages(i, j) {
+      const temp = this.myPackages[i];
+      this.myPackages[i] = this.myPackages[j];
+      this.myPackages[j] = temp;
     },
   },
 };

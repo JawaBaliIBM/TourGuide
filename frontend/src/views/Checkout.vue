@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <SearchNavbar :name="name" :show-search-bar="false"/>
     <CurrentLocation
       :disable-edit="true"
-      location="Cimahi"
+      :location="city"
       class="pt-12"
     />
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
@@ -29,9 +29,14 @@ export default {
     FloatingButton,
     PencilIcon,
   },
+  mounted() {
+    this.name = this.$route.query.name;
+    this.city = this.$route.query.city;
+  },
   data() {
     return {
-      basket: [],
+      name: '',
+      city: '',
       myPackages: [
         {
           id: 1,
@@ -74,7 +79,12 @@ export default {
   },
   methods: {
     redirectToTimeline() {
-      this.$router.push({ name: 'timeline-fixed' });
+      this.$router.push({
+        name: 'timeline-fixed',
+        query: {
+          ...this.$route.query,
+        },
+      });
     },
   },
 };

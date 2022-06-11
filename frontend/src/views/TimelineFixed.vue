@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar :name="name" :show-search-bar="false"/>
+    <SearchNavbar :name="name" :show-search-bar="false" :handleBackClicked="redirectToHome"/>
     <CurrentLocation
       :disable-edit="true"
       :location="city"
@@ -75,9 +75,9 @@ export default {
     };
   },
   methods: {
-    redirectToCheckout() {
+    redirectToHome() {
       this.$router.push({
-        name: 'checkout',
+        name: 'explore',
       });
     },
   },

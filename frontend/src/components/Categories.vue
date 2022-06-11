@@ -55,6 +55,7 @@ export default {
         name: 'result',
         query: {
           category: categoryName,
+          ...this.$route.query,
         },
       });
     },

@@ -1,7 +1,10 @@
 <template>
   <nav>
     <div class="bg-primary px-6 pt-6" :class="showSearchBar?'h-24':'h-20'">
-      <h3 v-if="name" class="text-lg font-norml text-base-100">Hello, {{ name }}!</h3>
+      <div class="flex">
+        <ChevronLeftIcon v-if="!hideBack" class="w-6 text-white mr-4" @click="handleBack"/>
+        <h3 v-if="name" class="text-lg font-norml text-base-100">Hello, {{ name }}!</h3>
+      </div>
     </div>
     <div class="mx-4 m-[-25px]">
       <div v-if="showSearchBar" class="input-group drop-shadow-md">
@@ -21,12 +24,28 @@
 </template>
 
 <script>
+import { ChevronLeftIcon } from '@heroicons/vue/solid';
+
 export default {
   name: 'SearchNavbar',
   props: {
     name: String,
     showSearchBar: Boolean,
     keyword: String,
+    hideBack: Boolean,
+    handleBackClicked: Function,
+  },
+  components: {
+    ChevronLeftIcon,
+  },
+  methods: {
+    handleBack() {
+      if (this.handleBackClicked) {
+        this.handleBackClicked();
+      } else {
+        this.$router.go(-1);
+      }
+    },
   },
 };
 </script>

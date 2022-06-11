@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchNavbar :name="name"/>
+    <SearchNavbar :name="name" hideBack/>
     <main class="container mx-auto px-8 min-h-screen flex flex-column justify-center items-center
     mt-[-100px]">
       <section class="prose">

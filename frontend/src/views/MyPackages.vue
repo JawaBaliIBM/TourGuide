@@ -7,7 +7,7 @@
       class="pt-12"
     />
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
-      <input type="text" :value="packageName" class="input input-ghost w-full max-w-xs" />
+      <input type="text" v-model="packageName" class="input input-ghost w-full max-w-xs" />
       <PencilIcon class="h-4 w-4 ml-2"/>
     </div>
     <PackageList :packages="myPackages" class="mb-4" @removePackage="id => filterPackage(id)"/>
