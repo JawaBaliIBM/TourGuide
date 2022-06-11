@@ -16,6 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from tourguideapi.views import get_recommendation
+from tourguideapi.views import create_plan
+from tourguideapi.views import get_plan_review
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('recommendation/', get_recommendation, name="get_recommendation"),
+    path('plan/', create_plan, name="create_plan"),
+    path('plan/<int:id>/',
+         get_plan_review,
+         name = 'get_plan_review'),
 ]
