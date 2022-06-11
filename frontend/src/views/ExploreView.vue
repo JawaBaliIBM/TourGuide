@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
     <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation location="Cimahi" class="pt-12"/>
+    <CurrentLocation :location="selectedCity" class="pt-12"/>
     <MyPlan class= "pt-6 mb-4"/>
     <Categories class="pt-6"/>
   </div>
@@ -21,6 +21,14 @@ export default {
     Categories,
     MyPlan,
     FloatingButton,
+  },
+  mounted() {
+    this.selectedCity = this.$route.query.city;
+  },
+  data() {
+    return {
+      selectedCity: null,
+    };
   },
 };
 </script>
