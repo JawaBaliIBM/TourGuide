@@ -1,7 +1,14 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation :location="selectedCity" class="pt-12"/>
+    <SearchNavbar
+      :name="name"
+      :show-search-bar="true"
+      @enter="redirectToSearchResult"
+    />
+    <CurrentLocation
+      :location="selectedCity"
+      class="pt-12"
+    />
     <MyPlan class= "pt-6 mb-4"/>
     <Categories class="pt-6"/>
   </div>
@@ -24,11 +31,25 @@ export default {
   },
   mounted() {
     this.selectedCity = this.$route.query.city;
+    this.name = this.$route.query.name;
   },
   data() {
     return {
       selectedCity: null,
+      name: '',
     };
+  },
+  methods: {
+    redirectToSearchResult(keyword) {
+      this.$router.push({
+        name: 'result',
+        query: {
+          keyword,
+          name: this.name,
+          city: this.selectedCity,
+        },
+      });
+    },
   },
 };
 </script>

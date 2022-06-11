@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <SearchNavbar :name="name" :show-search-bar="false"/>
     <CurrentLocation
       :disable-edit="true"
-      location="Cimahi"
+      :location="city"
       class="pt-12"
     />
     <h1 class="pros flex justify-center font-bold text-lg">Enjoy your day</h1>
@@ -25,9 +25,15 @@ export default {
     CurrentLocation,
     Timeline,
   },
+  mounted() {
+    this.name = this.$route.query.name;
+    this.city = this.$route.query.city;
+  },
   data() {
     return {
       basket: [],
+      name: '',
+      city: '',
       myPackages: [
         {
           id: 1,

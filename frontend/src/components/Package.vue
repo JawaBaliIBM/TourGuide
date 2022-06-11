@@ -5,7 +5,7 @@
       <p class="text-sm">{{destination.location}}</p>
       <p class="text-sm ">Rp {{destination.price}}</p>
     </div>
-    <XIcon class="w-4"/>
+    <XIcon class="w-4" @click="$emit('removePackage', destination.id)"/>
   </div>
 </template>
 <script>

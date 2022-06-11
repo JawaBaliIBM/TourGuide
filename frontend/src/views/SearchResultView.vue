@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation location="Cimahi" class="pt-12"/>
+    <SearchNavbar :name="name" :keyword="keyword" :show-search-bar="true"/>
+    <CurrentLocation :location="city" class="pt-12"/>
     <SearchResult
       :destinations="destinations"
       class="pt-6"
@@ -29,8 +29,16 @@ export default {
     SearchResult,
     AddPackageButton,
   },
+  mounted() {
+    this.city = this.$route.query.city;
+    this.name = this.$route.query.name;
+    this.keyword = this.$route.query.keyword;
+  },
   data() {
     return {
+      name: '',
+      city: '',
+      keyword: '',
       basket: [],
       destinations: [
         {
@@ -82,6 +90,10 @@ export default {
     redirectToPackagePage() {
       this.$router.push({
         name: 'myPackages',
+        query: {
+          ...this.$route.query,
+          basket: JSON.stringify(this.basket),
+        },
       });
     },
   },

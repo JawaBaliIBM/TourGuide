@@ -4,6 +4,7 @@
     v-for="pack in packages"
     :key="pack.name"
     :destination="pack"
+    @removePackage="id => $emit('removePackage', id)"
     />
   </div>
 </template>

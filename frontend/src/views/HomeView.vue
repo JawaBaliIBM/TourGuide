@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchNavbar name="Felita"/>
+    <SearchNavbar :name="name"/>
     <main class="container mx-auto px-8 min-h-screen flex flex-column justify-center items-center
     mt-[-100px]">
       <section class="prose">
@@ -38,9 +38,11 @@ export default {
   },
   mounted() {
     this.getCity();
+    this.name = this.$route.query.name;
   },
   data() {
     return {
+      name: '',
       cities: [],
       selectedCity: 'Choose City',
       isError: false,
@@ -53,6 +55,7 @@ export default {
           name: 'explore',
           query: {
             city: this.selectedCity,
+            name: this.name,
           },
         });
       } else {

@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <SearchNavbar :name="name" :show-search-bar="false"/>
     <CurrentLocation
       :disable-edit="true"
-      location="Cimahi"
+      :location="city"
       class="pt-12"
     />
     <h1 class="pros flex justify-center font-bold text-lg">Here is our recommendation</h1>
@@ -30,8 +30,14 @@ export default {
     FloatingButton,
     PencilIcon,
   },
+  mounted() {
+    this.city = this.$route.query.city;
+    this.name = this.$route.query.name;
+  },
   data() {
     return {
+      name: '',
+      city: '',
       basket: [],
       myPackages: [
         {
