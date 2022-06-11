@@ -27,7 +27,9 @@ class PlanSerializer(serializers.ModelSerializer):
     def get_items(self, obj):
         # Make sure the items returned are sorted by order of trip,
         # in this case, by order or object insertion/creation
-        return PlanItemSerializer(obj.items.order_by('id'), many=True, read_only=True).data
+        # TODO: Order by seq
+        # return PlanItemSerializer(sorted(self.context.get("items", []), key=seq), many=True, read_only=True).data
+        return PlanItemSerializer(self.context.get("items", []), many=True, read_only=True).data
 
     class Meta:
         model = Plan
@@ -39,6 +41,7 @@ class PlanReviewSerializer(PlanSerializer):
 
     def get_total(self, obj):
         total = 0
-        for plan_item in obj.items.all():
+        plan_items = self.context.get("items", [])
+        for plan_item in plan_items:
             total += plan_item.price
         return total
