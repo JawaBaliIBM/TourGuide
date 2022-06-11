@@ -78,6 +78,9 @@ export default {
     redirectToHome() {
       this.$router.push({
         name: 'explore',
+        query: {
+          ...this.$route.query,
+        },
       });
     },
   },
