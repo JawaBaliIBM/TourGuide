@@ -1,11 +1,12 @@
 from django.urls import path, include
 from rest_framework import routers
 from .views import (
-    CityViewSet, POIList
+    CityViewSet, POIList, OnGoingPlanViewset
 )
 
 router = routers.SimpleRouter()
 router.register(r'cities', CityViewSet, basename='cities')
+router.register(r'on-going-plans', OnGoingPlanViewset, basename='on-going-plans')
 
 urlpatterns = [
     path('api/', include(router.urls)),

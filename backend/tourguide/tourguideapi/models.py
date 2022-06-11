@@ -67,6 +67,8 @@ class PlanItem(models.Model):
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0)
     type = models.CharField(max_length=3, choices=PlanItemChoice.choices)
+    seq = models.PositiveIntegerField(default=1)
+    ticket_url = models.TextField(default="https://www.google.com/")
 
 class City(models.Model):
     id = models.BigAutoField(primary_key=True)
