@@ -16,16 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from tourguideapi.views import get_recommendation
-# from tourguideapi.views import create_plan
-from tourguideapi.views import get_plan_review
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/recommendation/', get_recommendation, name="get_recommendation"),
-    # path('api/plan/', create_plan, name="create_plan"),
-    path('api/plan-review/',
-         get_plan_review,
-         name = 'get_plan_review'),
     path('', include('tourguideapi.urls'))
 ]
