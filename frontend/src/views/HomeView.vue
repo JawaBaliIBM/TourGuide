@@ -64,7 +64,7 @@ export default {
     },
     getCity() {
       axios
-        .get('https://62530581c534af46cb92aea3.mockapi.io/cities')
+        .get(`${this.$root.BASE_URL}/cities`)
         .then((response) => {
           this.cities = response.data;
         });

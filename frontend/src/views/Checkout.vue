@@ -7,9 +7,9 @@
       class="pt-12"
     />
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
-      <h2 class="prosa text-lg">Package name</h2>
+      <h2 class="prosa text-lg">{{priceList.name}}</h2>
     </div>
-    <Pricelist :destinations="myPackages" :total="40000" class="mb-4"/>
+    <Pricelist :prices="priceList" :total="40000" class="mb-4"/>
     <FloatingButton text="Pay" :fixed="true" @click="redirectToTimeline"/>
   </div>
 </template>
@@ -19,6 +19,7 @@ import CurrentLocation from '@/components/CurrentLocation.vue';
 import Pricelist from '@/components/Pricelist.vue';
 import FloatingButton from '@/components/FloatingButton.vue';
 import { PencilIcon } from '@heroicons/vue/solid';
+import axios from 'axios';
 
 export default {
   name: 'SearchResultView',
@@ -32,12 +33,13 @@ export default {
   mounted() {
     this.name = this.$route.query.name;
     this.city = this.$route.query.city;
+    this.checkoutId = this.$route.query.checkoutId;
   },
   data() {
     return {
       name: '',
       city: '',
-      myPackages: [
+      priceList: [
         {
           id: 1,
           name: 'Aare',
@@ -85,6 +87,13 @@ export default {
           ...this.$route.query,
         },
       });
+    },
+    getPrice() {
+      axios
+        .get(`${this.$root.BASE_URL}/plan/${this.checkoutId}`)
+        .then((response) => {
+          this.priceList = response.data;
+        });
     },
   },
 };

@@ -19,7 +19,7 @@
         @change="isError = false"
       >
         <option disabled selected>Choose Starting Point</option>
-        <option v-for="startPoint in myPackages" :key="startPoint.id">{{startPoint.name}}</option>
+        <option v-for="startPoint in myPackages" :key="startPoint.id">{{startPoint.title}}</option>
       </select>
       <label class="label cursor-pointer float-left" for="include-transport-checkbox">
         <input
@@ -73,6 +73,9 @@ export default {
           name: 'timeline',
           query: {
             ...this.$route.query,
+            isIncludeTransportation: this.isIncludeTransportation,
+            selectedStartPoint: this.selectedStartPoint,
+            packageName: this.packageName,
           },
         });
       } else {

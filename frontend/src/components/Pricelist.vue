@@ -1,16 +1,16 @@
 <template>
   <div>
     <div
-      v-for="destination in destinations"
-      :key="destination.id"
+      v-for="item in prices.items"
+      :key="item.id"
       class="flex justify-between items-center border border-base-200 py-1 px-4"
     >
       <div>
-        <p class="font-medium">{{destination.name}}</p>
-        <p class="text-sm">{{destination.location}}</p>
+        <p class="font-medium">{{item.name}}</p>
+        <p class="text-sm">{{item.location}}</p>
       </div>
       <div>
-          <p class="text-md font-medium ">Rp {{destination.price}}</p>
+          <p class="text-md font-medium ">Rp {{item.price}}</p>
       </div>
     </div>
     <div
@@ -20,7 +20,7 @@
         <p class="font-bold text-lg">Total</p>
       </div>
       <div>
-          <p class="text-lg font-medium ">Rp {{total}}</p>
+          <p class="text-lg font-medium ">Rp {{prices.total}}</p>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
 export default {
   name: 'Pricelist',
   props: {
-    destinations: Array,
+    prices: Array,
     total: Number,
   },
 };

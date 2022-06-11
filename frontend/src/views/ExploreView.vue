@@ -9,7 +9,7 @@
       :location="selectedCity"
       class="pt-12"
     />
-    <MyPlan class= "pt-6 mb-4"/>
+    <MyPlan v-if="myPackages || myPackages.length > 0" class= "pt-6 mb-4" :packages="myPackages"/>
     <Categories class="pt-6"/>
   </div>
 </template>
@@ -19,6 +19,7 @@ import CurrentLocation from '@/components/CurrentLocation.vue';
 import Categories from '@/components/Categories.vue';
 import MyPlan from '@/components/MyPlan.vue';
 import FloatingButton from '@/components/FloatingButton.vue';
+import axios from 'axios';
 
 export default {
   name: 'ExploreView',
@@ -37,6 +38,7 @@ export default {
     return {
       selectedCity: null,
       name: '',
+      myPackages: [],
     };
   },
   methods: {
@@ -49,6 +51,13 @@ export default {
           city: this.selectedCity,
         },
       });
+    },
+    getOnGoingPlan() {
+      axios
+        .get(`${this.$root.BASE_URL}/on-going-plans`)
+        .then((response) => {
+          this.myPackages = response.data;
+        });
     },
   },
 };

@@ -11,5 +11,10 @@ export default {
       },
     });
   },
+  data() {
+    return {
+      BASE_URL: 'https://62530581c534af46cb92aea3.mockapi.io/',
+    };
+  },
 };
 </script>
