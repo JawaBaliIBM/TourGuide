@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      BASE_URL: 'https://3b50-2001-448a-50e0-6aa7-b16e-fec3-497e-bb2c.ngrok.io/api',
+      BASE_URL: `${process.env.VUE_APP_BASE_URL}/api`,
     };
   },
 };
