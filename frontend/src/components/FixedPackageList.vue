@@ -6,10 +6,10 @@
     >
       <div class="flex border border-base-200 rounded-md m-4 w-[80vw] indicator">
         <div class="flex items-center justify-center">
-          <img :src="pack.photo" :alt="pack.name" class="w-24 h-24" />
+          <img :src="pack.photo" :alt="pack.title" class="w-24 h-24" />
         </div>
         <div class="ml-4">
-          <p class="text-left font-medium pb-2"> {{ pack.name }}</p>
+          <p class="text-left font-medium pb-2"> {{ pack.title }}</p>
           <div class="flex items-center" v-if="pack.type === 'POI'">
             <LocationMarkerIcon class="h-3 w-3 mr-1"/>
             <p class="text-xs">{{pack.address}}</p>

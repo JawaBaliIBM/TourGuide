@@ -6,11 +6,14 @@
       :location="city"
       class="pt-12"
     />
-    <h1 class="pros flex justify-center font-bold text-lg">Enjoy your day</h1>
-    <div class="flex justify-center items-center py-4 font-medium text-secondary">
-      <h2 class="text-lg">{{myPackages.name}}</h2>
+    <div v-if="isLoading" class="flex btn btn-lg btn-ghost loading"></div>
+    <div v-else>
+      <h1 class="pros flex justify-center font-bold text-lg">Enjoy your day</h1>
+      <div class="flex justify-center items-center py-2 font-medium text-secondary">
+        <h2 class="text-lg">{{myPackages.name}}</h2>
+      </div>
+      <Timeline :packages="myPackages.plan_items" class="mb-24" fixed />
     </div>
-    <Timeline :packages="myPackages.plan_items" class="mb-24" fixed />
   </div>
 </template>
 <script>
@@ -36,6 +39,7 @@ export default {
       name: '',
       city: '',
       myPackages: [],
+      isLoading: false,
     };
   },
   methods: {
@@ -48,10 +52,13 @@ export default {
       });
     },
     getOnGoingPlan() {
+      this.isLoading = true;
       axios
         .get(`${this.$root.BASE_URL}/on-going-plans/`)
         .then((response) => {
+          console.log(response.data);
           this.myPackages = response.data;
+          this.isLoading = false;
         });
     },
   },

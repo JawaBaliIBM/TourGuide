@@ -62,7 +62,6 @@ export default {
       axios
         .get(`${this.$root.BASE_URL}/on-going-plans/`)
         .then((response) => {
-          console.log(response.data.plan_items);
           this.myPackages = response.data.plan_items;
           this.isLoading = false;
         });

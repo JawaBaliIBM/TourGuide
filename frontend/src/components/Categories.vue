@@ -55,9 +55,9 @@ export default {
       this.$router.push({
         name: 'result',
         query: {
+          ...this.$route.query,
           category: categoryName,
           categoryKey,
-          ...this.$route.query,
         },
       });
     },

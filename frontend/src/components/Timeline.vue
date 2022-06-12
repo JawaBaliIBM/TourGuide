@@ -19,7 +19,7 @@
               <button
                 v-if="fixed"
                 class="btn btn-primary btn-xs text-white cursor-pointer"
-                :href="ticket_url"
+                @click="window.location.href(`${ticket_url}`)"
               >
                 {{ pack.type === 'POI' ? 'Show Ticket' : 'Book Now' }}
               </button>
@@ -43,11 +43,11 @@
           <img :src="pack.photo" :alt="pack.title" class="w-24" />
           <div class="ml-4">
             <p class="text-left font-medium pb-2"> {{ pack.title }}</p>
-            <div class="flex items-center mb-2">
+            <div class="flex items-center mb-2" v-if="pack.type !== 'ROU'">
               <LocationMarkerIcon class="h-3 w-3 mr-1"/>
               <p class="text-xs text-left">{{pack.address}}</p>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center" v-if="pack.type !== 'ROU'">
               <ClockIcon class="h-3 w-3 mr-1"/>
               <p class="text-xs">{{pack.open_time}}</p>
             </div>
