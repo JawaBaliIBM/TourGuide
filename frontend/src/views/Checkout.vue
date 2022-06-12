@@ -9,7 +9,7 @@
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
       <h2 class="prosa text-lg">{{priceList.name}}</h2>
     </div>
-    <Pricelist :prices="priceList" :total="40000" class="mb-4"/>
+    <Pricelist :prices="priceList.plan_items" :total="priceList.total" class="mb-4"/>
     <FloatingButton text="Pay" :fixed="true" @click="redirectToTimeline"/>
   </div>
 </template>
@@ -33,67 +33,39 @@ export default {
   mounted() {
     this.name = this.$route.query.name;
     this.city = this.$route.query.city;
-    this.checkoutId = this.$route.query.checkoutId;
+    this.getPrice();
   },
   data() {
     return {
       name: '',
       city: '',
-      priceList: [
-        {
-          id: 1,
-          name: 'Aare',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bern, Swiss',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 2,
-          name: 'Culinary',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 3,
-          name: 'Leisure',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 4,
-          name: 'Wellness',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-      ],
+      priceList: [],
     };
   },
   methods: {
     redirectToTimeline() {
-      this.$router.push({
-        name: 'timeline-fixed',
-        query: {
-          ...this.$route.query,
-        },
-      });
+      const res = this.createOnGoingPlan();
+      if (res) {
+        this.$router.push({
+          name: 'timeline-fixed',
+          query: {
+            ...this.$route.query,
+            checkout: undefined,
+          },
+        });
+      }
     },
     getPrice() {
-      axios
-        .get(`${this.$root.BASE_URL}/plan/${this.checkoutId}`)
-        .then((response) => {
-          this.priceList = response.data;
+      this.priceList = JSON.parse(this.$route.query.checkout);
+    },
+    async createOnGoingPlan() {
+      const response = await axios
+        .post(`${this.$root.BASE_URL}/on-going-plans/`, {
+          name: this.priceList.name,
+          plan_items: this.priceList.plan_items,
         });
+
+      return response;
     },
   },
 };

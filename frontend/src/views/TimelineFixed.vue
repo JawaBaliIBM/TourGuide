@@ -29,6 +29,7 @@ export default {
   mounted() {
     this.name = this.$route.query.name;
     this.city = this.$route.query.city;
+    this.getOnGoingPlan();
   },
   data() {
     return {
@@ -48,7 +49,7 @@ export default {
     },
     getOnGoingPlan() {
       axios
-        .get(`${this.$root.BASE_URL}/on-going-plans`)
+        .get(`${this.$root.BASE_URL}/on-going-plans/`)
         .then((response) => {
           this.myPackages = response.data;
         });

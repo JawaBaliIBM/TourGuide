@@ -64,7 +64,7 @@ export default {
     },
     getCity() {
       axios
-        .get(`${this.$root.BASE_URL}/cities`)
+        .get(`${this.$root.BASE_URL}/cities/`)
         .then((response) => {
           this.cities = response.data;
         });

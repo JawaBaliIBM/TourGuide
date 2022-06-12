@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-for="item in prices.items"
+      v-for="item in prices"
       :key="item.id"
       class="flex justify-between items-center border border-base-200 py-1 px-4"
     >
@@ -20,7 +20,7 @@
         <p class="font-bold text-lg">Total</p>
       </div>
       <div>
-          <p class="text-lg font-medium ">Rp {{prices.total}}</p>
+          <p class="text-lg font-medium ">Rp {{total}}</p>
       </div>
     </div>
   </div>

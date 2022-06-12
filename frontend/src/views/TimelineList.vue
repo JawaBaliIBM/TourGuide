@@ -57,12 +57,12 @@ export default {
     };
   },
   methods: {
-    redirectToCheckout(responseId) {
+    redirectToCheckout(response) {
       this.$router.push({
         name: 'checkout',
         query: {
           ...this.$route.query,
-          checkoutId: responseId,
+          checkout: JSON.stringify(response),
         },
       });
     },
@@ -82,29 +82,24 @@ export default {
     },
     getRecommendations() {
       axios
-        .post(`${this.$root.BASE_URL}/recommendation`, {
-          params: {
-            package_name: this.$route.query.packageName,
-            starting_point: this.$route.query.selectedStartPoint,
-            is_include_ride: this.$route.query.isIncludeTransportation,
-            destinations: this.$route.query.basket,
-          },
+        .post(`${this.$root.BASE_URL}/recommendation/`, {
+          package_name: this.$route.query.packageName,
+          starting_point: { id: parseInt(this.$route.query.selectedStartPoint, 10) },
+          is_include_ride: !!this.$route.query.isIncludeTransportation,
+          destinations: JSON.parse(this.$route.query.basket),
         })
         .then((response) => {
           this.myPackages = response.data;
         });
     },
     async createPlan() {
-      const response = await axios.post(`${this.$root.BASE_URL}/plan`, {
-        params: {
-          package_name: this.$route.query.packageName,
-          starting_point: this.$route.query.selectedStartPoint,
-          is_include_ride: this.$route.query.isIncludeTransportation,
-          destinations: this.$route.query.basket,
-        },
+      const response = await axios.post(`${this.$root.BASE_URL}/plan-review/`, {
+        package_name: this.$route.query.packageName,
+        is_include_ride: !!this.$route.query.isIncludeTransportation,
+        destinations: this.myPackages,
       });
       if (response) {
-        this.redirectToCheckout(response.id);
+        this.redirectToCheckout(response.data);
       }
     },
   },

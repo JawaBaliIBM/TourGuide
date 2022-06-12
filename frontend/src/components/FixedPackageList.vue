@@ -12,9 +12,9 @@
             {{ pack.type === 'POI' ? 'Show Ticket' : 'Book Now' }}
           </button>
         </span>
-        <img :src="pack.photo" :alt="pack.title" class="w-24" />
+        <img :src="pack.photo" :alt="pack.name" class="w-24" />
         <div class="ml-4">
-          <p class="text-left font-medium pb-2"> {{ pack.title }}</p>
+          <p class="text-left font-medium pb-2"> {{ pack.name }}</p>
           <div class="flex items-center">
             <LocationMarkerIcon class="h-3 w-3 mr-1"/>
             <p class="text-xs">{{pack.address}}</p>

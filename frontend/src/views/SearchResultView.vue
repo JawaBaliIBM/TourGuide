@@ -74,17 +74,17 @@ export default {
       });
     },
     async getCities() {
-      const response = await axios.get(`${this.$root.BASE_URL}/cities`);
+      const response = await axios.get(`${this.$root.BASE_URL}/cities/`);
       response.data.forEach((data) => {
         this.cities[data.name] = data.id;
       });
     },
     getDestinations(keyword = this.keyword) {
       axios
-        .get(`${this.$root.BASE_URL}/point-of-interests`, {
+        .get(`${this.$root.BASE_URL}/point-of-interest`, {
           params: {
             keyword,
-            category: this.category,
+            category: this.$route.query.categoryKey,
             city_id: this.cities[this.city],
           },
         })
@@ -95,6 +95,7 @@ export default {
     handleRemoveCategory() {
       this.category = undefined;
       this.$route.query.category = this.category;
+      this.$route.query.categoryKey = undefined;
       this.getDestinations();
     },
   },

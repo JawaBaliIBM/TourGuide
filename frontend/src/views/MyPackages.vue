@@ -19,7 +19,13 @@
         @change="isError = false"
       >
         <option disabled selected>Choose Starting Point</option>
-        <option v-for="startPoint in myPackages" :key="startPoint.id">{{startPoint.title}}</option>
+        <option
+          v-for="startPoint in myPackages"
+          :key="startPoint.id"
+          :value="startPoint.id"
+        >
+          {{startPoint.title}}
+        </option>
       </select>
       <label class="label cursor-pointer float-left" for="include-transport-checkbox">
         <input

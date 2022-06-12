@@ -9,7 +9,7 @@
       :location="selectedCity"
       class="pt-12"
     />
-    <MyPlan v-if="myPackages || myPackages.length > 0" class= "pt-6 mb-4" :packages="myPackages"/>
+    <MyPlan v-if="myPackages" class= "pt-6 mb-4" :packages="myPackages"/>
     <Categories class="pt-6"/>
   </div>
 </template>
@@ -33,6 +33,7 @@ export default {
   mounted() {
     this.selectedCity = this.$route.query.city;
     this.name = this.$route.query.name;
+    this.getOnGoingPlan();
   },
   data() {
     return {
@@ -54,9 +55,10 @@ export default {
     },
     getOnGoingPlan() {
       axios
-        .get(`${this.$root.BASE_URL}/on-going-plans`)
+        .get(`${this.$root.BASE_URL}/on-going-plans/`)
         .then((response) => {
-          this.myPackages = response.data;
+          console.log(response.data.plan_items);
+          this.myPackages = response.data.plan_items;
         });
     },
   },
