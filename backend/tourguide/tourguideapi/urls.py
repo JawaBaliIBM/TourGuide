@@ -12,7 +12,7 @@ router.register(r'on-going-plans', OnGoingPlanViewset, basename='on-going-plans'
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('api/point-of-interets', POIList.as_view(), name='point-of-interets'),
+    path('api/point-of-interest', POIList.as_view(), name='point-of-interest'),
     path('api/recommendation/', get_recommendation, name="get_recommendation"),
     path('api/plan-review/',
          get_plan_review,

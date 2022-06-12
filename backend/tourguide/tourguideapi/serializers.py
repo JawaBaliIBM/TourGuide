@@ -36,7 +36,22 @@ class PlanSerializer(serializers.ModelSerializer):
 
     def get_plan_items(self, obj):
         plan_items = PlanItem.objects.filter(plan=obj)
-        return PlanItemSerializer(plan_items, many=True).data
+        data = PlanItemSerializer(plan_items, many=True).data
+        response_data = []
+        for plan_item in data:
+            item = dict(plan_item)
+            if plan_item["type"] == "POI":
+                poi = PointOfInterest.objects.filter(title=plan_item['name']).first()
+                
+                item['photo'] = poi.photo
+                item['address'] = poi.address
+                item['open_time'] = poi.open_time
+            else:
+                item['photo'] = 'https://seeklogo.com/images/G/grab-logo-7020E74857-seeklogo.com.png'
+            
+            response_data.append(item)
+
+        return response_data
 
 
 class PlanReviewSerializer(serializers.ModelSerializer):

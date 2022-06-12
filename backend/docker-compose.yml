@@ -13,7 +13,7 @@ services:
       - "5432:5432"
   web:
     build: .
-    command: python3 tourguide/manage.py runserver 0.0.0.0:8000
+    command: python3 tourguide/manage.py runserver localhost:80
     volumes:
       - .:/code
     ports:

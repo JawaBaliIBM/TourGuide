@@ -39,21 +39,22 @@ def get_recommendation(request: Request):
     is_include_ride = data.get("is_include_ride", True)
 
     destination_ids = [d["id"] for d in destinations]
-    pois = PointOfInterest.objects.filter(id__in=destination_ids)
+    pois = PointOfInterest.objects.filter(id__in=destination_ids).all()
     starting_point = PointOfInterest.objects.get(id=starting_point["id"])
     # Ideally, call grab API for fare on each places
     # But Farefeed API access is not supported???
     # Now just sort it randomly
-    sorted_pois = random.shuffle(pois)
+    pois = list(pois)
+    random.shuffle(list(pois))
     # Put starting point at the front
-    sorted_pois.insert(0, sorted_pois.pop(sorted_pois.index(starting_point)))
+    pois.insert(0, pois.pop(pois.index(starting_point)))
     
-    pois_ser = POISerializer(sorted_pois, many=True)
+    pois_ser = POISerializer(pois, many=True)
     return Response(pois_ser.data)
 
 
 @csrf_exempt
-@api_view(http_method_names=['GET'])
+@api_view(http_method_names=['POST'])
 def get_plan_review(request: Request):
     # plan = Plan.objects.filter(id=id).first()
     # if plan is None:
@@ -72,7 +73,8 @@ def get_plan_review(request: Request):
             plan=plan,
             name=poi.title,
             price=poi.price,
-            type=PlanItem.PlanItemChoice.POI.value)
+            type=PlanItem.PlanItemChoice.POI.value,
+            seq=2 * idx + 1)
         plan_items.append(plan_item)
         if idx < len(pois) - 1 and is_include_ride:
             # Ideally, call grab API for fare on each places
@@ -82,7 +84,8 @@ def get_plan_review(request: Request):
                 plan=plan,
                 name=f"{poi.title} to {next_poi.title}",
                 price=random.randint(1, 100) * 1000,
-                type=PlanItem.PlanItemChoice.ROUTE.value)
+                type=PlanItem.PlanItemChoice.ROUTE.value,
+                seq=2 * (idx + 1))
             plan_items.append(plan_item)
 
     plan_ser = PlanReviewSerializer(plan, context={'items': plan_items})
@@ -129,13 +132,12 @@ class OnGoingPlanViewset(viewsets.ViewSet):
         year, month, day = self.__today_date()
         try:
             plan = Plan.objects.filter(created_at__year=year,
-                created_at__month=month, created_at__day=day)
+                created_at__month=month, created_at__day=day).first()
             serializer = PlanSerializer(
-                plan, 
-                many=True)
+                plan)
         except Plan.DoesNotExist:
             logger.warning("On going plan does not exist!")
-            serializer = PlanSerializer(None, many=True)
+            serializer = PlanSerializer(None, many=False)
         
         return Response(serializer.data)
 
