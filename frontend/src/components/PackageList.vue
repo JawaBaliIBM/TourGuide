@@ -2,8 +2,9 @@
   <div>
     <Package
     v-for="pack in packages"
-    :key="pack.name"
+    :key="pack.id"
     :destination="pack"
+    @removePackage="id => $emit('removePackage', id)"
     />
   </div>
 </template>

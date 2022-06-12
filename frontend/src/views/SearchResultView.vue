@@ -1,12 +1,21 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="true"/>
-    <CurrentLocation location="Cimahi" class="pt-12"/>
+    <SearchNavbar
+      :name="name"
+      :keyword="keyword"
+      :show-search-bar="true"
+      @enter="(keyword) => getDestinations(keyword)"
+    />
+    <CurrentLocation :location="city" class="pt-12"/>
+    <div v-if="isLoading" class="flex btn btn-lg btn-ghost loading"></div>
     <SearchResult
+      v-else
       :destinations="destinations"
       class="pt-6"
+      :category="category"
       @addPackage="addBasket"
       @removePackage="removeFromBasket"
+      @closeCategory="handleRemoveCategory"
     />
     <AddPackageButton
       v-if="basket.length > 0"
@@ -19,6 +28,7 @@
 import SearchNavbar from '@/components/SearchNavbar.vue';
 import CurrentLocation from '@/components/CurrentLocation.vue';
 import SearchResult from '@/components/SearchResult.vue';
+import axios from 'axios';
 import AddPackageButton from '../components/AddPackageButton.vue';
 
 export default {
@@ -29,47 +39,25 @@ export default {
     SearchResult,
     AddPackageButton,
   },
+  async mounted() {
+    this.city = this.$route.query.city;
+    this.name = this.$route.query.name;
+    this.keyword = this.$route.query.keyword;
+    this.category = this.$route.query.category;
+
+    await this.getCities();
+    this.getDestinations();
+  },
   data() {
     return {
+      name: '',
+      city: '',
+      keyword: '',
+      category: '',
       basket: [],
-      destinations: [
-        {
-          id: 1,
-          name: 'Aare',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bern, Swiss',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 2,
-          name: 'Culinary',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 3,
-          name: 'Leisure',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 4,
-          name: 'Wellness',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-      ],
+      cities: {},
+      destinations: [],
+      isLoading: false,
     };
   },
   methods: {
@@ -82,7 +70,38 @@ export default {
     redirectToPackagePage() {
       this.$router.push({
         name: 'myPackages',
+        query: {
+          ...this.$route.query,
+          basket: JSON.stringify(this.basket),
+        },
       });
+    },
+    async getCities() {
+      const response = await axios.get(`${this.$root.BASE_URL}/cities/`);
+      response.data.forEach((data) => {
+        this.cities[data.name] = data.id;
+      });
+    },
+    getDestinations(keyword = this.keyword) {
+      this.isLoading = true;
+      axios
+        .get(`${this.$root.BASE_URL}/point-of-interest`, {
+          params: {
+            keyword,
+            category: this.$route.query.categoryKey,
+            city_id: this.cities[this.city],
+          },
+        })
+        .then((response) => {
+          this.destinations = response.data;
+          this.isLoading = false;
+        });
+    },
+    handleRemoveCategory() {
+      this.category = undefined;
+      this.$route.query.category = this.category;
+      this.$route.query.categoryKey = undefined;
+      this.getDestinations();
     },
   },
 };

@@ -1,20 +1,26 @@
 <template>
   <div class="card border border-base-200">
     <figure>
-      <img class="w-full" :src="destination.imagesUrl" :alt="destination.name"/>
+      <img class="w-full h-24" :src="destination.photo" :alt="destination.title"/>
     </figure>
     <div class="card-body p-2">
-      <p class="font-medium">{{destination.name}}</p>
+      <p class="font-medium">{{destination.title}}</p>
       <div class="flex items-center">
         <LocationMarkerIcon class="h-3 w-3 mr-1"/>
-        <p class="text-xs">{{destination.location}}</p>
+        <p class="text-xs">{{destination.address}}</p>
       </div>
       <div class="flex items-center">
         <ClockIcon class="h-3 w-3 mr-1"/>
-        <p class="text-xs">{{destination.time}}</p>
+        <p class="text-xs">{{destination.open_time}}</p>
       </div>
-      <p class="text-xs text-gray-400 pt-2">{{destination.description}}</p>
-      <p class="text-md flex justify-end font-medium text-accent">Rp{{destination.price}}</p>
+      <div class="pt-2 overflow-hidden w-full">
+        <p class="text-xs h-24 text-gray-400 text-ellipsis ...">
+          {{destination.description}}
+        </p>
+      </div>
+      <p class="text-md flex justify-end items-end font-medium text-accent">
+        Rp{{destination.price}}
+      </p>
       <div class="card-actions justify-end">
         <button
           v-if="isShowAddButton"

@@ -1,24 +1,35 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <SearchNavbar :name="name" :show-search-bar="false"/>
     <CurrentLocation
       :disable-edit="true"
-      location="Cimahi"
+      :location="city"
       class="pt-12"
     />
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
-      <h2 class="prosa text-lg">Package name</h2>
+      <input type="text" v-model="packageName" class="input input-ghost w-full max-w-xs" />
       <PencilIcon class="h-4 w-4 ml-2"/>
     </div>
-    <PackageList :packages="myPackages" class="mb-4"/>
+    <PackageList :packages="myPackages" class="mb-4" @removePackage="id => filterPackage(id)"/>
     <div class="px-4 mb-8">
-      <select class="select select-bordered w-full mb-4">
+      <select
+        v-model="selectedStartPoint"
+        class="select select-bordered w-full mb-4"
+        :class="isError ? 'select-error': ''"
+        @change="isError = false"
+      >
         <option disabled selected>Choose Starting Point</option>
-        <option>Depok</option>
-        <option>Bandung</option>
+        <option
+          v-for="startPoint in myPackages"
+          :key="startPoint.id"
+          :value="startPoint.id"
+        >
+          {{startPoint.title}}
+        </option>
       </select>
       <label class="label cursor-pointer float-left" for="include-transport-checkbox">
         <input
+          v-model="isIncludeTransportation"
           type="checkbox"
           class="checkbox checkbox-primary mr-4"
           id="include-transport-checkbox"
@@ -45,52 +56,41 @@ export default {
     FloatingButton,
     PencilIcon,
   },
+  mounted() {
+    this.myPackages = JSON.parse(this.$route.query.basket);
+    this.name = this.$route.query.name;
+    this.city = this.$route.query.city;
+  },
   data() {
     return {
-      basket: [],
-      myPackages: [
-        {
-          id: 1,
-          name: 'Aare',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bern, Swiss',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 2,
-          name: 'Culinary',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 3,
-          name: 'Leisure',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 4,
-          name: 'Wellness',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-      ],
+      myPackages: [],
+      selectedStartPoint: 'Choose Starting Point',
+      city: '',
+      name: '',
+      isError: false,
+      isIncludeTransportation: false,
+      packageName: 'Package Name',
     };
   },
   methods: {
     redirectToTimeline() {
-      this.$router.push({ name: 'timeline' });
+      if (this.selectedStartPoint !== 'Choose Starting Point') {
+        this.$router.push({
+          name: 'timeline',
+          query: {
+            ...this.$route.query,
+            basket: JSON.stringify(this.myPackages),
+            isIncludeTransportation: this.isIncludeTransportation,
+            selectedStartPoint: this.selectedStartPoint,
+            packageName: this.packageName,
+          },
+        });
+      } else {
+        this.isError = true;
+      }
+    },
+    filterPackage(id) {
+      this.myPackages = this.myPackages.filter((des) => des.id !== id);
     },
   },
 };

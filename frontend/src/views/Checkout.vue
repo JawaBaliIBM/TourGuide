@@ -1,15 +1,15 @@
 <template>
   <div class="min-h-screen">
-    <SearchNavbar name="Fellita" :show-search-bar="false"/>
+    <SearchNavbar :name="name" :show-search-bar="false"/>
     <CurrentLocation
       :disable-edit="true"
-      location="Cimahi"
+      :location="city"
       class="pt-12"
     />
     <div class="flex justify-center items-center py-4 font-medium text-secondary">
-      <h2 class="prosa text-lg">Package name</h2>
+      <h2 class="prosa text-lg">{{priceList.name}}</h2>
     </div>
-    <Pricelist :destinations="myPackages" :total="40000" class="mb-4"/>
+    <Pricelist :prices="priceList.plan_items" :total="priceList.total" class="mb-4"/>
     <FloatingButton text="Pay" :fixed="true" @click="redirectToTimeline"/>
   </div>
 </template>
@@ -19,6 +19,7 @@ import CurrentLocation from '@/components/CurrentLocation.vue';
 import Pricelist from '@/components/Pricelist.vue';
 import FloatingButton from '@/components/FloatingButton.vue';
 import { PencilIcon } from '@heroicons/vue/solid';
+import axios from 'axios';
 
 export default {
   name: 'SearchResultView',
@@ -29,52 +30,42 @@ export default {
     FloatingButton,
     PencilIcon,
   },
+  mounted() {
+    this.name = this.$route.query.name;
+    this.city = this.$route.query.city;
+    this.getPrice();
+  },
   data() {
     return {
-      basket: [],
-      myPackages: [
-        {
-          id: 1,
-          name: 'Aare',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bern, Swiss',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 2,
-          name: 'Culinary',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 3,
-          name: 'Leisure',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-        {
-          id: 4,
-          name: 'Wellness',
-          imagesUrl: 'https://api.lorem.space/image?w=400&h=400',
-          location: 'Bandung, Jawa Barat',
-          time: '09.00 - 10.00',
-          description: 'Lorem ipsum dolor sit amet syalalala syalalhi',
-          price: 10000,
-        },
-      ],
+      name: '',
+      city: '',
+      priceList: [],
     };
   },
   methods: {
     redirectToTimeline() {
-      this.$router.push({ name: 'timeline-fixed' });
+      const res = this.createOnGoingPlan();
+      if (res) {
+        this.$router.push({
+          name: 'timeline-fixed',
+          query: {
+            ...this.$route.query,
+            checkout: undefined,
+          },
+        });
+      }
+    },
+    getPrice() {
+      this.priceList = JSON.parse(this.$route.query.checkout);
+    },
+    async createOnGoingPlan() {
+      const response = await axios
+        .post(`${this.$root.BASE_URL}/on-going-plans/`, {
+          name: this.priceList.name,
+          plan_items: this.priceList.plan_items,
+        });
+
+      return response;
     },
   },
 };
