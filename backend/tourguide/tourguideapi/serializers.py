@@ -40,6 +40,7 @@ class PlanSerializer(serializers.ModelSerializer):
         response_data = []
         for plan_item in data:
             item = dict(plan_item)
+            item['title'] = item.pop('name')
             if plan_item["type"] == "POI":
                 poi = PointOfInterest.objects.filter(title=plan_item['name']).first()
                 

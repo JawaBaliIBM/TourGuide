@@ -11,9 +11,9 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
-  web:
-    build: .
-    command: python3 tourguide/manage.py runserver localhost:80
+  backend:
+    build: ./backend
+    command: python3 backend/tourguide/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
@@ -24,3 +24,12 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+  frontend:
+    build: ./frontend
+    ports:
+      - '8080:8080'
+    environment:
+      - VUE_APP_BASE_URL=http://0.0.0.0:8000
+    volumes:
+      - '.:/app'
+    command: /bin/sh -c "yarn serve"

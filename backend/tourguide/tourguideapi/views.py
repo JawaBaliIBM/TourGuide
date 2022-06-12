@@ -1,4 +1,4 @@
-import random
+import random, time
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -131,8 +131,9 @@ class OnGoingPlanViewset(viewsets.ViewSet):
     def list(self, request):
         year, month, day = self.__today_date()
         try:
+            time.sleep(1)
             plan = Plan.objects.filter(created_at__year=year,
-                created_at__month=month, created_at__day=day).first()
+                created_at__month=month, created_at__day=day).latest('id')
             serializer = PlanSerializer(
                 plan)
         except Plan.DoesNotExist:
