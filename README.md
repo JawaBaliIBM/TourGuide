@@ -1,5 +1,5 @@
 # TourGuide
-To get started building, we provide some template source code which you can use as a starting point. This repository contains web client that access APIs.
+This repository contains web app for TourGuide project.
 
 ## Getting started
 
