@@ -13,12 +13,14 @@
         <ClockIcon class="h-3 w-3 mr-1"/>
         <p class="text-xs">{{destination.open_time}}</p>
       </div>
-      <div class="h-24 pt-2 overflow-hidden">
-        <p class="text-xs text-gray-400 text-ellipsis ...">
+      <div class="pt-2 overflow-hidden w-full">
+        <p class="text-xs h-24 text-gray-400 text-ellipsis ...">
           {{destination.description}}
         </p>
       </div>
-      <p class="text-md flex justify-end font-medium text-accent">Rp{{destination.price}}</p>
+      <p class="text-md flex justify-end items-end font-medium text-accent">
+        Rp{{destination.price}}
+      </p>
       <div class="card-actions justify-end">
         <button
           v-if="isShowAddButton"

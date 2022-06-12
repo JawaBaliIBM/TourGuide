@@ -79,6 +79,7 @@ export default {
           name: 'timeline',
           query: {
             ...this.$route.query,
+            basket: JSON.stringify(this.myPackages),
             isIncludeTransportation: this.isIncludeTransportation,
             selectedStartPoint: this.selectedStartPoint,
             packageName: this.packageName,

@@ -9,8 +9,11 @@
       :location="selectedCity"
       class="pt-12"
     />
-    <MyPlan v-if="myPackages" class= "pt-6 mb-4" :packages="myPackages"/>
-    <Categories class="pt-6"/>
+    <div v-if="isLoading" class="flex btn btn-lg btn-ghost loading"></div>
+    <div v-else>
+      <MyPlan v-if="myPackages" class= "pt-6 mb-4" :packages="myPackages"/>
+      <Categories class="pt-6"/>
+    </div>
   </div>
 </template>
 <script>
@@ -40,6 +43,7 @@ export default {
       selectedCity: null,
       name: '',
       myPackages: [],
+      isLoading: false,
     };
   },
   methods: {
@@ -54,11 +58,13 @@ export default {
       });
     },
     getOnGoingPlan() {
+      this.isLoading = true;
       axios
         .get(`${this.$root.BASE_URL}/on-going-plans/`)
         .then((response) => {
           console.log(response.data.plan_items);
           this.myPackages = response.data.plan_items;
+          this.isLoading = false;
         });
     },
   },

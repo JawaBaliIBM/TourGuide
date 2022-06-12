@@ -6,11 +6,10 @@
       class="flex justify-between items-center border border-base-200 py-1 px-4"
     >
       <div>
-        <p class="font-medium">{{item.name}}</p>
-        <p class="text-sm">{{item.location}}</p>
+        <p class="font-medium py-4">{{item.name}}</p>
       </div>
-      <div>
-          <p class="text-md font-medium ">Rp {{item.price}}</p>
+      <div class="w-40">
+          <p class="text-md font-medium text-right">Rp {{item.price}}</p>
       </div>
     </div>
     <div

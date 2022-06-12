@@ -7,7 +7,9 @@
       @enter="(keyword) => getDestinations(keyword)"
     />
     <CurrentLocation :location="city" class="pt-12"/>
+    <div v-if="isLoading" class="flex btn btn-lg btn-ghost loading"></div>
     <SearchResult
+      v-else
       :destinations="destinations"
       class="pt-6"
       :category="category"
@@ -55,6 +57,7 @@ export default {
       basket: [],
       cities: {},
       destinations: [],
+      isLoading: false,
     };
   },
   methods: {
@@ -80,6 +83,7 @@ export default {
       });
     },
     getDestinations(keyword = this.keyword) {
+      this.isLoading = true;
       axios
         .get(`${this.$root.BASE_URL}/point-of-interest`, {
           params: {
@@ -90,6 +94,7 @@ export default {
         })
         .then((response) => {
           this.destinations = response.data;
+          this.isLoading = false;
         });
     },
     handleRemoveCategory() {
