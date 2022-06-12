@@ -30,22 +30,22 @@ export default {
         {
           key: 'MG',
           name: 'Museums & Galleries',
-          imagesUrl: 'https://i.postimg.cc/xd5G44hF/all-categories-1-1.png',
+          imagesUrl: 'https://i.postimg.cc/bv4Dzvt3/image-3.png',
         },
         {
           key: 'LA',
           name: 'Landmark',
-          imagesUrl: 'https://i.postimg.cc/xd5G44hF/all-categories-1-1.png',
+          imagesUrl: 'https://i.postimg.cc/yx1VBqvL/image-4.png',
         },
         {
           key: 'WE',
           name: 'Wellness',
-          imagesUrl: 'https://i.postimg.cc/xd5G44hF/all-categories-1-1.png',
+          imagesUrl: 'https://i.postimg.cc/SKbbkFKc/image-5.png',
         },
         {
           key: 'NA',
           name: 'Nature',
-          imagesUrl: 'https://i.postimg.cc/xd5G44hF/all-categories-1-1.png',
+          imagesUrl: 'https://i.postimg.cc/5t81C9rP/image-6.png',
         },
       ],
     };

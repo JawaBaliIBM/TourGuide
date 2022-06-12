@@ -2,7 +2,7 @@
   <div>
     <SearchNavbar :name="name" hideBack/>
     <main class="container mx-auto px-8 min-h-screen flex flex-column justify-center items-center
-    mt-[-100px]">
+    mt-[-200px]">
       <section class="prose">
         <h1 class="mb-8"> Where do you want to go? </h1>
         <select
@@ -21,6 +21,7 @@
         </select>
       </section>
     </main>
+    <img src="https://i.postimg.cc/zXfxbdQ6/image-2.png" alt="illustration" class="absolute bottom-12 opacity-20">
     <FloatingButton text="next" @click="redirectToExplore"/>
   </div>
 </template>
